@@ -1,2 +1,181 @@
-# Cybersecurity-Home-Lab
-Kali-Linux-Vulnerability-Analysis
+# 🛡️ Cybersecurity Hands-On Home Lab & Vulnerability Analysis
+
+## 📝 Project Overview
+This repository documents the architecture, configuration, and practical application of my dedicated cybersecurity sandbox environment. The purpose of this home lab is to gain hands-on, practical experience with industry-standard security tools, aligning with the core domains of the CompTIA Security+ certification. 
+
+By building this environment from scratch, I am mastering the foundational skills required for effective vulnerability management, information gathering, and threat analysis.
+
+---
+
+## 💻 Lab Architecture & Tooling
+*   **Hypervisor:** VMware Workstation Pro (Isolated Virtual Network)
+*   **Attacker Platform:** Kali Linux
+*   **Core Utilities Demonstrated:** 
+    *   `Nmap` (Network mapping and service version detection)
+    *   `Nikto` (Web server vulnerability scanning)
+    *   `whois` (Reconnaissance and public registration data harvesting)
+
+---
+
+## 🔍 Real-World Troubleshooting & Triage
+A critical component of engineering is overcoming unexpected system bottlenecks. During an initial reconnaissance phase using the `whois` utility, the terminal returned a networking error:  
+`getaddrinfo(whois.pir.org): Temporary failure in name resolution`
+
+### 🛠️ Diagnostic & Resolution Steps:
+1.  **Network Verification:** Executed an ICMP reachability test (`ping -c 2 8.8.8.8`) to confirm active outbound layer-3 internet connectivity. The ping succeeded, isolating the issue strictly to DNS name resolution inside the VM.
+2.  **Strategic Workaround:** Bypassed the temporary DNS bottleneck entirely by conducting manual target acquisition using the raw destination IP address (`45.33.32.156`).
+3.  **Data Logging:** Successfully forced the system to bypass the hostname translation, establish a direct connection, and pipe the output quietly into an evidentiary log file using Linux redirection syntax (`> target_info.txt`).
+
+---
+
+## 📸 Lab Artifacts & Evidence
+
+### 1. Active Vulnerability Assessment Output
+Below is the captured network footprint data compiled from the manual IP target query:
+
+```text
+[# ARIN WHOIS data and services are subject to the Terms of Use
+# available at: https://www.arin.net/resources/registry/whois/tou/
+#
+# If you see inaccuracies in the results, please report at
+# https://www.arin.net/resources/registry/whois/inaccuracy_reporting/
+#
+# Copyright 1997-2026, American Registry for Internet Numbers, Ltd.
+#
+
+
+
+# start
+
+NetRange:       45.33.0.0 - 45.33.127.255
+CIDR:           45.33.0.0/17
+NetName:        LINODE-US
+NetHandle:      NET-45-33-0-0-1
+Parent:         NET45 (NET-45-0-0-0-0)
+NetType:        Direct Allocation
+OriginAS:       
+Organization:   Akamai Technologies, Inc. (AKAMAI)
+RegDate:        2015-03-20
+Updated:        2023-09-18
+Comment:        Geofeed https://ipgeo.akamai.com/linode-geofeed.csv
+Ref:            https://rdap.arin.net/registry/ip/45.33.0.0
+
+
+
+OrgName:        Akamai Technologies, Inc.
+OrgId:          AKAMAI
+Address:        145 Broadway
+City:           Cambridge
+StateProv:      MA
+PostalCode:     02142
+Country:        US
+RegDate:        1999-01-21
+Updated:        2023-10-24
+Ref:            https://rdap.arin.net/registry/entity/AKAMAI
+
+
+OrgTechHandle: IPADM11-ARIN
+OrgTechName:   ipadmin
+OrgTechPhone:  +1-617-444-0017 
+OrgTechEmail:  ip-admin@akamai.com
+OrgTechRef:    https://rdap.arin.net/registry/entity/IPADM11-ARIN
+
+OrgAbuseHandle: NUS-ARIN
+OrgAbuseName:   NOC United States
+OrgAbusePhone:  +1-617-444-2535 
+OrgAbuseEmail:  abuse@akamai.com
+OrgAbuseRef:    https://rdap.arin.net/registry/entity/NUS-ARIN
+
+OrgTechHandle: SJS98-ARIN
+OrgTechName:   Schecter, Steven Jay
+OrgTechPhone:  +1-617-274-7134 
+OrgTechEmail:  ip-admin@akamai.com
+OrgTechRef:    https://rdap.arin.net/registry/entity/SJS98-ARIN
+
+RTechHandle: LNO21-ARIN
+RTechName:   Linode Network Operations
+RTechPhone:  +1-609-380-7100 
+RTechEmail:  support@linode.com
+RTechRef:    https://rdap.arin.net/registry/entity/LNO21-ARIN
+
+RNOCHandle: LNO21-ARIN
+RNOCName:   Linode Network Operations
+RNOCPhone:  +1-609-380-7100 
+RNOCEmail:  support@linode.com
+RNOCRef:    https://rdap.arin.net/registry/entity/LNO21-ARIN
+
+RAbuseHandle: LAS12-ARIN
+RAbuseName:   Linode Abuse Support
+RAbusePhone:  +1-609-380-7100 
+RAbuseEmail:  abuse@linode.com
+RAbuseRef:    https://rdap.arin.net/registry/entity/LAS12-ARIN
+
+# end
+
+
+# start
+
+NetRange:       45.33.0.0 - 45.33.127.255
+CIDR:           45.33.0.0/17
+NetName:        LINODE
+NetHandle:      NET-45-33-0-0-2
+Parent:         LINODE-US (NET-45-33-0-0-1)
+NetType:        Reassigned
+OriginAS:       
+Organization:   Linode (LINOD)
+RegDate:        2022-12-21
+Updated:        2023-09-18
+Comment:        Geofeed https://ipgeo.akamai.com/linode-geofeed.csv
+Ref:            https://rdap.arin.net/registry/ip/45.33.0.0
+
+
+OrgName:        Linode
+OrgId:          LINOD
+Address:        249 Arch St
+City:           Philadelphia
+StateProv:      PA
+PostalCode:     19106
+Country:        US
+RegDate:        2008-04-24
+Updated:        2022-12-15
+Comment:        http://www.linode.com
+Ref:            https://rdap.arin.net/registry/entity/LINOD
+
+
+OrgNOCHandle: LNO21-ARIN
+OrgNOCName:   Linode Network Operations
+OrgNOCPhone:  +1-609-380-7100 
+OrgNOCEmail:  support@linode.com
+OrgNOCRef:    https://rdap.arin.net/registry/entity/LNO21-ARIN
+
+OrgTechHandle: LNO21-ARIN
+OrgTechName:   Linode Network Operations
+OrgTechPhone:  +1-609-380-7100 
+OrgTechEmail:  support@linode.com
+OrgTechRef:    https://rdap.arin.net/registry/entity/LNO21-ARIN
+
+OrgAbuseHandle: LAS12-ARIN
+OrgAbuseName:   Linode Abuse Support
+OrgAbusePhone:  +1-609-380-7100 
+OrgAbuseEmail:  abuse@linode.com
+OrgAbuseRef:    https://rdap.arin.net/registry/entity/LAS12-ARIN
+
+OrgTechHandle: IPADM11-ARIN
+OrgTechName:   ipadmin
+OrgTechPhone:  +1-617-444-0017 
+OrgTechEmail:  ip-admin@akamai.com
+OrgTechRef:    https://rdap.arin.net/registry/entity/IPADM11-ARIN
+
+# end
+
+
+
+#
+# ARIN WHOIS data and services are subject to the Terms of Use
+# available at: https://www.arin.net/resources/registry/whois/tou/
+#
+# If you see inaccuracies in the results, please report at
+# https://www.arin.net/resources/registry/whois/inaccuracy_reporting/
+#
+# Copyright 1997-2026, American Registry for Internet Numbers, Ltd.]
+```
